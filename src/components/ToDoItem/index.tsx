@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { ListItem, Checkbox, TextField, Button, Typography } from '@mui/material';
 
-export interface Todo {
+interface Todo {
   _id: string;
   task: string;
   completed: boolean;
@@ -21,36 +22,42 @@ const TodoItem = ({ todo, updateTodo, deleteTodo }: TodoItemProps) => {
   };
 
   const handleUpdate = () => {
-    updateTodo(todo._id, { ...todo, task });
+    updateTodo(todo._id, { ...todo, task }); // Triggers dialog in TodoPage
     setIsEditing(false);
   };
 
   return (
-    <li className="todo-item">
+    <ListItem sx={{ display: 'flex', alignItems: 'center', gap: 2, borderBottom: '1px solid #ddd' }}>
       {isEditing ? (
         <>
-          <input
-            type="text"
+          <TextField
             value={task}
             onChange={(e) => setTask(e.target.value)}
+            variant="outlined"
+            size="small"
+            fullWidth
           />
-          <button onClick={handleUpdate}>Save</button>
+          <Button variant="contained" color="primary" onClick={handleUpdate}>
+            Save
+          </Button>
         </>
       ) : (
         <>
-          <input
-            type="checkbox"
-            checked={todo.completed}
-            onChange={handleToggle}
-          />
-          <span style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
+          <Checkbox checked={todo.completed} onChange={handleToggle} />
+          <Typography
+            sx={{ textDecoration: todo.completed ? 'line-through' : 'none', flexGrow: 1 }}
+          >
             {todo.task}
-          </span>
-          <button onClick={() => setIsEditing(true)}>Edit</button>
-          <button onClick={() => deleteTodo(todo._id)}>Delete</button>
+          </Typography>
+          <Button variant="outlined" onClick={() => setIsEditing(true)}>
+            Edit
+          </Button>
+          <Button variant="outlined" color="error" onClick={() => deleteTodo(todo._id)}>
+            Delete
+          </Button>
         </>
       )}
-    </li>
+    </ListItem>
   );
 };
 
