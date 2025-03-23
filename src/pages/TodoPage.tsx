@@ -37,7 +37,7 @@ const TodoPage = () => {
   useEffect(() => {
     const fetchTodos = async () => {
       try {
-        const response = await api.get<Todo[]>('/tasks'); // Use api instead of axios
+        const response = await api.get<Todo[]>('/tasks'); 
         setTodos(response.data);
       } catch (error) {
         console.error('Error fetching todos:', error);

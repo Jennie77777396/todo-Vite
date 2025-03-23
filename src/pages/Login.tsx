@@ -16,8 +16,12 @@ const Login = () => {
       localStorage.setItem('token', response.data.token); // Store token in localStorage
       setError('');
       navigate('/todos'); // Redirect to Todo page after login
-    } catch (err: any) {
-      setError(err.response?.data?.error || 'Login failed');
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.error || 'Login failed');
+      } else {
+        setError('Login failed');
+      }
     }
   };
 
@@ -51,7 +55,7 @@ const Login = () => {
         </Button>
       </form>
       <Typography variant="body2" sx={{ mt: 2 }}>
-        Don’t have an account?{' '}
+        Don't have an account?{' '}
         <Button component="a" href="/register" color="primary">
           Register
         </Button>

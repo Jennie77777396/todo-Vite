@@ -16,8 +16,12 @@ const Register = () => {
       localStorage.setItem('token', response.data.token); // Store token
       setError('');
       navigate('/todos'); // Redirect to Todo page after registration
-    } catch (err: any) {
-      setError(err.response?.data?.error || 'Registration failed');
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.error || 'Registration failed');
+      } else {
+        setError('Registration failed');
+      }
     }
   };
 
