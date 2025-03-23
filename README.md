@@ -1,54 +1,74 @@
-# React + TypeScript + Vite
+# Todo App Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the frontend of a Todo application built with React, TypeScript, and Material-UI. It allows users to register, log in, and manage their tasks (add, edit, delete, toggle completion) with a responsive design supporting iPhone and iPad.
 
-Currently, two official plugins are available:
+## Prerequisites
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Node.js**: Version 16.x or higher
+- **pnpm**: Version 8.x or higher (install globally with `npm install -g pnpm`)
+- **Backend Server**: The [Todo App Backend](https://github.com/your-repo/todo-server) must be running (see backend README for setup).
 
-## Expanding the ESLint configuration
+## Installation
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/Jennie77777396/todo-Vite.git
+   cd todo-client
+   ```
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+2. **Install Dependencies**:
+   ```bash
+   pnpm install
+   ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+3. **Configure Environment**:
+   - The frontend uses an Axios instance (`src/utils/api.ts`) preconfigured to communicate with the backend at `http://localhost:5000`. Ensure the backend is running on this port or update `src/utils/api.ts` if the backend URL differs:
+     ```ts
+     const api = axios.create({
+       baseURL: 'http://localhost:5000', // Adjust if needed
+       headers: { 'Content-Type': 'application/json' },
+     });
+     ```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Running the App
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+1. **Start the Development Server**:
+   ```bash
+   pnpm run dev
+   ```
+   - The app will run on `http://localhost:5173` (Vite’s default port).
+
+2. **Open in Browser**:
+   - Navigate to `http://localhost:5173` to access the app.
+
+## Usage
+
+1. **Home Page** (`/`):
+   - A simple welcome page. Log in or register to proceed.
+
+2. **Register** (`/register`):
+   - Enter an email (e.g., `demo@gmail.com`) and password (e.g., `123456`) to create an account.
+   - Redirects to `/todos` upon success.
+
+3. **Login** (`/login`):
+   - Use your registered email and password to log in.
+   - Redirects to `/todos` upon success.
+
+4. **Todo List** (`/todos`):
+   - **Add Task**: Type a task (e.g., "Review code") in the input field and click "Add".
+   - **Edit Task**: Click "Edit" on a task, modify it, and click "Save". Confirm in the dialog.
+   - **Toggle Completion**: Check/uncheck the box next to a task. Confirm in the dialog.
+   - **Delete Task**: Click "Delete" on a task and confirm in the dialog.
+   - **Logout**: Click "Logout" in the navbar to return to the login page.
+
+5. **Responsive Design**:
+   - Optimized for iPhone (stacked layout) and iPad (horizontal layout). Test with browser dev tools.
+
+## Project Structure
+
+- `src/`
+  - `components/`: Reusable UI components (`NavBar.tsx`, `TodoItem.tsx`, `TodoList.tsx`).
+  - `pages/`: Route-specific pages (`Home.tsx`, `Login.tsx`, `Register.tsx`, `TodoPage.tsx`).
+  - `utils/`: API utility (`api.ts`).
+  - `store/`: Redux store for theme toggling (`themeSlice.ts`).
+

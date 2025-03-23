@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, Typography, Button, IconButton, Tooltip } from '@mui/material';
+import { AppBar, Toolbar, Typography, Button, IconButton, Tooltip, Box } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { toggleTheme } from '../../store/themeSlice';
@@ -8,51 +8,95 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 const NavBar = () => {
   const dispatch = useAppDispatch();
   const mode = useAppSelector((state) => state.theme.mode);
-  const isAuthenticated = !!localStorage.getItem('token'); // Check if token exists
+  const isAuthenticated = !!localStorage.getItem('token');
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem('token'); 
-    navigate('/login'); 
+    localStorage.removeItem('token');
+    navigate('/login');
   };
 
   return (
     <AppBar position="static">
-      <Toolbar>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Todo App
-        </Typography>
-        <Button color="inherit" component={Link} to="/">
-          Home
-        </Button>
-        {isAuthenticated ? (
-          <>
-            <Button color="inherit" component={Link} to="/todos">
-              Todos
-            </Button>
-            <Button color="inherit" onClick={handleLogout}>
+      <Toolbar
+        sx={{
+          flexDirection: { xs: 'column', sm: 'row' }, 
+          alignItems: { xs: 'center', sm: 'center' },
+          py: { xs: 1, sm: 0 }, 
+          justifyContent: { xs: 'center', sm: 'space-between' },
+        }}
+      >
+        <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{
+              flexGrow: { sm: 1 }, 
+              fontSize: { xs: '1.1rem', sm: '1.25rem' }, 
+              mb: { xs: 1, sm: 0 }, 
+            }}
+          >
+            Todo App
+          </Typography>
+        </Link>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', sm: 'row' }, 
+            gap: { xs: 1, sm: 2 }, 
+            alignItems: 'center',
+            ml: { sm: 'auto' },
+            justifyContent: { xs: 'center', sm: 'flex-end' },
+            width: { xs: '100%', sm: 'auto' },
+          }}
+        >
+          {isAuthenticated ? (
+            <Button
+              color="inherit"
+              onClick={handleLogout}
+              sx={{
+                fontSize: { xs: '0.8rem', sm: '0.875rem' }, 
+                px: { xs: 2, sm: 3 }, 
+              }}
+            >
               Logout
             </Button>
-          </>
-        ) : (
-          <>
-            <Button color="inherit" component={Link} to="/login">
-              Login
-            </Button>
-            <Button color="inherit" component={Link} to="/register">
-              Register
-            </Button>
-          </>
-        )}
-        <Tooltip title={mode === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}>
-          <IconButton
-            color="inherit"
-            onClick={() => dispatch(toggleTheme())}
-            sx={{ ml: 1 }}
-          >
-            {mode === 'light' ? <Brightness4Icon /> : <Brightness7Icon />}
-          </IconButton>
-        </Tooltip>
+          ) : (
+            <>
+              <Button
+                color="inherit"
+                component={Link}
+                to="/login"
+                sx={{
+                  fontSize: { xs: '0.8rem', sm: '0.875rem' },
+                  px: { xs: 2, sm: 3 },
+                }}
+              >
+                Login
+              </Button>
+              <Button
+                color="inherit"
+                component={Link}
+                to="/register"
+                sx={{
+                  fontSize: { xs: '0.8rem', sm: '0.875rem' },
+                  px: { xs: 2, sm: 3 },
+                }}
+              >
+                Register
+              </Button>
+            </>
+          )}
+          <Tooltip title={mode === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}>
+            <IconButton
+              color="inherit"
+              onClick={() => dispatch(toggleTheme())}
+              sx={{ ml: { sm: 1 }, mt: { xs: 1, sm: 0 } }} 
+            >
+              {mode === 'light' ? <Brightness4Icon /> : <Brightness7Icon />}
+            </IconButton>
+          </Tooltip>
+        </Box>
       </Toolbar>
     </AppBar>
   );

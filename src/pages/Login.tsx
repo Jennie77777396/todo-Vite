@@ -13,9 +13,9 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:5000/auth/login', { email, password });
-      localStorage.setItem('token', response.data.token); // Store token in localStorage
+      localStorage.setItem('token', response.data.token); 
       setError('');
-      navigate('/todos'); // Redirect to Todo page after login
+      navigate('/todos'); 
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         setError(err.response?.data?.error || 'Login failed');

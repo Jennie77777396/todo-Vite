@@ -1,4 +1,5 @@
-import { Routes, Route } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { Container } from '@mui/material';
 import Home from './pages/Home';
 import TodoPage from './pages/TodoPage';
@@ -8,9 +9,19 @@ import NavBar from './components/NavBar';
 import './App.css';
 
 const App = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setIsAuthenticated(!!token);
+  }, [location]); 
+
+  const noNavBarRoutes = ['/', '/login', '/register'];
+
   return (
     <>
-      <NavBar />
+      {isAuthenticated && !noNavBarRoutes.includes(location.pathname) && <NavBar />}
       <Container sx={{ mt: 4, pt: 2 }}>
         <Routes>
           <Route path="/" element={<Home />} />

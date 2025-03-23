@@ -13,9 +13,11 @@ const Register = () => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:5000/auth/register', { email, password });
-      localStorage.setItem('token', response.data.token); // Store token
+      console.log('response token ', response.data.token)
+      localStorage.setItem('token', response.data.token);
+      console.log('Token set in localStorage:', localStorage.getItem('token'));
       setError('');
-      navigate('/todos'); // Redirect to Todo page after registration
+      navigate('/todos'); 
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         setError(err.response?.data?.error || 'Registration failed');

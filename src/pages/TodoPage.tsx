@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import api from '../utils/api';
-import TodoList from '../components/ToDoList';
+import TodoList from '../components/TodoList';
 import {
   Typography,
   TextField,
@@ -11,12 +11,14 @@ import {
   DialogContent,
   DialogActions,
   Box,
+  Alert,
 } from '@mui/material';
 
 interface Todo {
   _id: string;
   task: string;
   completed: boolean;
+  userId: string;
 }
 
 interface FormData {
@@ -30,6 +32,7 @@ const TodoPage = () => {
   const [pendingTask, setPendingTask] = useState<string | null>(null);
   const [editTodoId, setEditTodoId] = useState<string | null>(null);
   const [deleteTodoId, setDeleteTodoId] = useState<string | null>(null);
+  const [error, setError] = useState<string>('');
   const { register, handleSubmit, reset } = useForm<FormData>({
     defaultValues: { task: '' },
   });
@@ -37,10 +40,12 @@ const TodoPage = () => {
   useEffect(() => {
     const fetchTodos = async () => {
       try {
-        const response = await api.get<Todo[]>('/tasks'); 
+        const response = await api.get<Todo[]>('/tasks');
         setTodos(response.data);
+        setError('');
       } catch (error) {
         console.error('Error fetching todos:', error);
+        setError('Failed to fetch tasks. Please try logging in again.');
       }
     };
     fetchTodos();
@@ -52,15 +57,34 @@ const TodoPage = () => {
       const response = await api.post<Todo>('/tasks', { task: data.task });
       setTodos([...todos, response.data]);
       reset();
+      setError('');
     } catch (error) {
       console.error('Error adding todo:', error);
+      setError('Failed to add task. Please check your login status.');
     }
   };
 
   const updateTodo = async (id: string, updatedTask: Partial<Todo>) => {
-    setEditTodoId(id);
-    setPendingTask(updatedTask.task || '');
-    setOpenEditDialog(true);
+    try {
+      // If updating task text, trigger confirmation dialog
+      if (updatedTask.task !== undefined) {
+        setEditTodoId(id);
+        setPendingTask(updatedTask.task);
+        setOpenEditDialog(true);
+        return;
+      }
+      // If only updating completed status, proceed directly
+      const response = await api.put<Todo>(`/tasks/${id}`, {
+        task: todos.find(t => t._id === id)?.task,
+        completed: updatedTask.completed ?? todos.find(t => t._id === id)?.completed,
+      });
+      setTodos(todos.map(todo => (todo._id === id ? response.data : todo)));
+      setError('');
+    } catch (error) {
+      console.error('Error updating todo:', error);
+      setError('Failed to update task.');
+      throw error; // Re-throw to let TodoItem handle errors if needed
+    }
   };
 
   const confirmEdit = async () => {
@@ -68,14 +92,16 @@ const TodoPage = () => {
     try {
       const response = await api.put<Todo>(`/tasks/${editTodoId}`, {
         task: pendingTask,
-        completed: todos.find(t => t._id === editTodoId)?.completed || false,
+        completed: todos.find(t => t._id === editTodoId)?.completed ?? false,
       });
       setTodos(todos.map(todo => (todo._id === editTodoId ? response.data : todo)));
       setOpenEditDialog(false);
       setEditTodoId(null);
       setPendingTask(null);
+      setError('');
     } catch (error) {
-      console.error('Error updating todo:', error);
+      console.error('Error confirming edit:', error);
+      setError('Failed to update task.');
     }
   };
 
@@ -91,8 +117,10 @@ const TodoPage = () => {
       setTodos(todos.filter(todo => todo._id !== deleteTodoId));
       setOpenDeleteDialog(false);
       setDeleteTodoId(null);
+      setError('');
     } catch (error) {
       console.error('Error deleting todo:', error);
+      setError('Failed to delete task.');
     }
   };
 
@@ -101,6 +129,7 @@ const TodoPage = () => {
       <Typography variant="h4" gutterBottom>
         Todo List
       </Typography>
+      {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
       <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
         <TextField
           {...register('task', { required: true })}
@@ -114,7 +143,7 @@ const TodoPage = () => {
       </form>
       <TodoList todos={todos} updateTodo={updateTodo} deleteTodo={deleteTodo} />
 
-      {/* Edit Confirmation Dialog */}
+      {/* Edit Confirmation Dialog (for task text) */}
       <Dialog open={openEditDialog} onClose={() => setOpenEditDialog(false)}>
         <DialogTitle>Confirm Edit Task</DialogTitle>
         <DialogContent>
