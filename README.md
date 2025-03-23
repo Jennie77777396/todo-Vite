@@ -15,8 +15,8 @@ This is the frontend of a Todo application built with React, TypeScript, and Mat
 
 2. **Clone the Repository**:
    ```bash
-   git clone https://github.com/Jennie77777396/todo-Vite.git
-   cd todo-client
+   git clone https://github.com/Jennie77777396/todo-vite.git
+   cd todo-vite
 
 3. **Install Dependencies**:
    ```bash
