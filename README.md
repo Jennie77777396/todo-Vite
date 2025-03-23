@@ -6,22 +6,24 @@ This is the frontend of a Todo application built with React, TypeScript, and Mat
 
 - **Node.js**: Version 16.x or higher
 - **pnpm**: Version 8.x or higher (install globally with `npm install -g pnpm`)
-- **Backend Server**: The [Todo App Backend](https://github.com/your-repo/todo-server) must be running (see backend README for setup).
+- **Backend Server**: The [Todo App Backend](https://github.com/Jennie77777396/todo-backend-express-mongoDB) must be running (see backend README for setup).
 
 ## Installation
 
-1. **Clone the Repository**:
+1. **Set Up Backend First**:
+   - Before proceeding, clone and configure the backend repository at [https://github.com/Jennie77777396/todo-backend-express-mongoDB](https://github.com/Jennie77777396/todo-backend-express-mongoDB). Follow its README instructions to start the server.
+
+2. **Clone the Repository**:
    ```bash
    git clone https://github.com/Jennie77777396/todo-Vite.git
    cd todo-client
-   ```
 
-2. **Install Dependencies**:
+3. **Install Dependencies**:
    ```bash
    pnpm install
    ```
 
-3. **Configure Environment**:
+4. **Configure Environment**:
    - The frontend uses an Axios instance (`src/utils/api.ts`) preconfigured to communicate with the backend at `http://localhost:5000`. Ensure the backend is running on this port or update `src/utils/api.ts` if the backend URL differs:
      ```ts
      const api = axios.create({
