@@ -1,5 +1,5 @@
 import { AppBar, Toolbar, Typography, Button, IconButton, Tooltip } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { toggleTheme } from '../../store/themeSlice';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
@@ -8,6 +8,13 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 const NavBar = () => {
   const dispatch = useAppDispatch();
   const mode = useAppSelector((state) => state.theme.mode);
+  const isAuthenticated = !!localStorage.getItem('token'); // Check if token exists
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('token'); 
+    navigate('/login'); 
+  };
 
   return (
     <AppBar position="static">
@@ -18,9 +25,25 @@ const NavBar = () => {
         <Button color="inherit" component={Link} to="/">
           Home
         </Button>
-        <Button color="inherit" component={Link} to="/todos">
-          Todos
-        </Button>
+        {isAuthenticated ? (
+          <>
+            <Button color="inherit" component={Link} to="/todos">
+              Todos
+            </Button>
+            <Button color="inherit" onClick={handleLogout}>
+              Logout
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button color="inherit" component={Link} to="/login">
+              Login
+            </Button>
+            <Button color="inherit" component={Link} to="/register">
+              Register
+            </Button>
+          </>
+        )}
         <Tooltip title={mode === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}>
           <IconButton
             color="inherit"

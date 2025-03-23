@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import axios from 'axios';
-import TodoList from '../components/TodoList';
+import api from '../utils/api';
+import TodoList from '../components/ToDoList';
 import {
   Typography,
   TextField,
@@ -37,7 +37,7 @@ const TodoPage = () => {
   useEffect(() => {
     const fetchTodos = async () => {
       try {
-        const response = await axios.get<Todo[]>('http://localhost:5000/tasks');
+        const response = await api.get<Todo[]>('/tasks'); // Use api instead of axios
         setTodos(response.data);
       } catch (error) {
         console.error('Error fetching todos:', error);
@@ -47,9 +47,9 @@ const TodoPage = () => {
   }, []);
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    if (!data.task.trim()) return; // Prevent adding empty tasks
+    if (!data.task.trim()) return;
     try {
-      const response = await axios.post<Todo>('http://localhost:5000/tasks', { task: data.task });
+      const response = await api.post<Todo>('/tasks', { task: data.task });
       setTodos([...todos, response.data]);
       reset();
     } catch (error) {
@@ -66,7 +66,7 @@ const TodoPage = () => {
   const confirmEdit = async () => {
     if (!editTodoId || !pendingTask) return;
     try {
-      const response = await axios.put<Todo>(`http://localhost:5000/tasks/${editTodoId}`, {
+      const response = await api.put<Todo>(`/tasks/${editTodoId}`, {
         task: pendingTask,
         completed: todos.find(t => t._id === editTodoId)?.completed || false,
       });
@@ -81,13 +81,13 @@ const TodoPage = () => {
 
   const deleteTodo = (id: string) => {
     setDeleteTodoId(id);
-    setOpenDeleteDialog(true); // Open delete confirmation dialog
+    setOpenDeleteDialog(true);
   };
 
   const confirmDelete = async () => {
     if (!deleteTodoId) return;
     try {
-      await axios.delete(`http://localhost:5000/tasks/${deleteTodoId}`);
+      await api.delete(`/tasks/${deleteTodoId}`);
       setTodos(todos.filter(todo => todo._id !== deleteTodoId));
       setOpenDeleteDialog(false);
       setDeleteTodoId(null);
