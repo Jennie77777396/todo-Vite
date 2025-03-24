@@ -20,7 +20,7 @@ This is the frontend of a Todo application built with React, TypeScript, and Mat
 
 3. **Install Dependencies**:
    ```bash
-   pnpm install
+   npm install
    ```
 
 4. **Configure Environment**:
@@ -36,7 +36,7 @@ This is the frontend of a Todo application built with React, TypeScript, and Mat
 
 1. **Start the Development Server**:
    ```bash
-   pnpm run dev
+   npm run dev
    ```
    - The app will run on `http://localhost:5173` (Vite’s default port).
 
