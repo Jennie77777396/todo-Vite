@@ -26,7 +26,7 @@ const NavBar = () => {
           justifyContent: { xs: 'center', sm: 'space-between' },
         }}
       >
-        <Link to="/" style={{ textDecoration: 'none', color: mode === 'light' ? 'white' : 'inherit' }}>
+        <Link to="/home" style={{ textDecoration: 'none', color: mode === 'light' ? 'white' : 'inherit' }}>
           <Typography
             variant="h6"
             component="div"
@@ -52,6 +52,17 @@ const NavBar = () => {
         >
           {isAuthenticated ? (
             <>
+              <Link to="/home" style={{ textDecoration: 'none', color: mode === 'light' ? 'white' : 'inherit' }}>
+                <Button
+                  color="inherit"
+                  sx={{
+                    fontSize: { xs: '0.8rem', sm: '0.875rem' },
+                    px: { xs: 2, sm: 3 },
+                  }}
+                >
+                  Home
+                </Button>
+              </Link>
               <Link to="/todos" style={{ textDecoration: 'none', color: mode === 'light' ? 'white' : 'inherit' }}>
                 <Button
                   color="inherit"
