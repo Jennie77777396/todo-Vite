@@ -17,11 +17,13 @@ This is the frontend of a Todo application built with React, TypeScript, and Mat
    ```bash
    git clone https://github.com/Jennie77777396/todo-vite.git
    cd todo-vite
+   ```
 
 3. **Install Dependencies**:
    ```bash
    npm install
    ```
+   - **Note**: Depending on your computer, you might need to use `pnpm install` instead of `npm install` due to compatibility issues with certain systems (e.g., package manager or OS differences).
 
 4. **Configure Environment**:
    - The frontend uses an Axios instance (`src/utils/api.ts`) preconfigured to communicate with the backend at `http://localhost:5000`. Ensure the backend is running on this port or update `src/utils/api.ts` if the backend URL differs:
@@ -73,4 +75,3 @@ This is the frontend of a Todo application built with React, TypeScript, and Mat
   - `pages/`: Route-specific pages (`Home.tsx`, `Login.tsx`, `Register.tsx`, `TodoPage.tsx`).
   - `utils/`: API utility (`api.ts`).
   - `store/`: Redux store for theme toggling (`themeSlice.ts`).
-

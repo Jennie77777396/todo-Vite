@@ -11,6 +11,10 @@ const NavBar = () => {
   const isAuthenticated = !!localStorage.getItem('token');
   const navigate = useNavigate();
 
+  const handleHome = () => {
+    navigate('/home');
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     navigate('/login');
@@ -26,7 +30,7 @@ const NavBar = () => {
           justifyContent: { xs: 'center', sm: 'space-between' },
         }}
       >
-        <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+        <Link to="/home" style={{ textDecoration: 'none', color: 'inherit' }}>
           <Typography
             variant="h6"
             component="div"
@@ -51,6 +55,17 @@ const NavBar = () => {
           }}
         >
           {isAuthenticated ? (
+           <> 
+           <Button
+              color="inherit"
+              onClick={handleHome}
+              sx={{
+                fontSize: { xs: '0.8rem', sm: '0.875rem' }, 
+                px: { xs: 2, sm: 3 }, 
+              }}
+            >
+              Home
+            </Button> 
             <Button
               color="inherit"
               onClick={handleLogout}
@@ -60,7 +75,7 @@ const NavBar = () => {
               }}
             >
               Logout
-            </Button>
+            </Button></>
           ) : (
             <>
               <Button

@@ -15,7 +15,7 @@ const Login = () => {
       const response = await axios.post('http://localhost:5000/auth/login', { email, password });
       localStorage.setItem('token', response.data.token); 
       setError('');
-      navigate('/todos'); 
+      navigate('/home'); 
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         setError(err.response?.data?.error || 'Login failed');

@@ -17,7 +17,7 @@ const Register = () => {
       localStorage.setItem('token', response.data.token);
       console.log('Token set in localStorage:', localStorage.getItem('token'));
       setError('');
-      navigate('/todos'); 
+      navigate('/home'); 
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         setError(err.response?.data?.error || 'Registration failed');
