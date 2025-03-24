@@ -11,10 +11,6 @@ const NavBar = () => {
   const isAuthenticated = !!localStorage.getItem('token');
   const navigate = useNavigate();
 
-  const handleHome = () => {
-    navigate('/home');
-  };
-
   const handleLogout = () => {
     localStorage.removeItem('token');
     navigate('/login');
@@ -55,51 +51,66 @@ const NavBar = () => {
           }}
         >
           {isAuthenticated ? (
-           <> 
-           <Button
-              color="inherit"
-              onClick={handleHome}
-              sx={{
-                fontSize: { xs: '0.8rem', sm: '0.875rem' }, 
-                px: { xs: 2, sm: 3 }, 
-              }}
-            >
-              Home
-            </Button> 
-            <Button
-              color="inherit"
-              onClick={handleLogout}
-              sx={{
-                fontSize: { xs: '0.8rem', sm: '0.875rem' }, 
-                px: { xs: 2, sm: 3 }, 
-              }}
-            >
-              Logout
-            </Button></>
+            <>
+              <Link to="/home" style={{ textDecoration: 'none' }}>
+                <Button
+                  color="inherit"
+                  sx={{
+                    fontSize: { xs: '0.8rem', sm: '0.875rem' },
+                    px: { xs: 2, sm: 3 },
+                  }}
+                >
+                  Home
+                </Button>
+              </Link>
+              <Link to="/todos" style={{ textDecoration: 'none' }}>
+                <Button
+                  color="inherit"
+                  sx={{
+                    fontSize: { xs: '0.8rem', sm: '0.875rem' },
+                    px: { xs: 2, sm: 3 },
+                  }}
+                >
+                  Todo
+                </Button>
+              </Link>
+              <Link to="/login" style={{ textDecoration: 'none' }}>
+                <Button
+                  color="inherit"
+                  onClick={handleLogout}
+                  sx={{
+                    fontSize: { xs: '0.8rem', sm: '0.875rem' },
+                    px: { xs: 2, sm: 3 },
+                  }}
+                >
+                  Logout
+                </Button>
+              </Link>
+            </>
           ) : (
             <>
-              <Button
-                color="inherit"
-                component={Link}
-                to="/login"
-                sx={{
-                  fontSize: { xs: '0.8rem', sm: '0.875rem' },
-                  px: { xs: 2, sm: 3 },
-                }}
-              >
-                Login
-              </Button>
-              <Button
-                color="inherit"
-                component={Link}
-                to="/register"
-                sx={{
-                  fontSize: { xs: '0.8rem', sm: '0.875rem' },
-                  px: { xs: 2, sm: 3 },
-                }}
-              >
-                Register
-              </Button>
+              <Link to="/login" style={{ textDecoration: 'none' }}>
+                <Button
+                  color="inherit"
+                  sx={{
+                    fontSize: { xs: '0.8rem', sm: '0.875rem' },
+                    px: { xs: 2, sm: 3 },
+                  }}
+                >
+                  Login
+                </Button>
+              </Link>
+              <Link to="/register" style={{ textDecoration: 'none' }}>
+                <Button
+                  color="inherit"
+                  sx={{
+                    fontSize: { xs: '0.8rem', sm: '0.875rem' },
+                    px: { xs: 2, sm: 3 },
+                  }}
+                >
+                  Register
+                </Button>
+              </Link>
             </>
           )}
           <Tooltip title={mode === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}>
