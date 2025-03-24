@@ -26,7 +26,7 @@ const NavBar = () => {
           justifyContent: { xs: 'center', sm: 'space-between' },
         }}
       >
-        <Link to="/home" style={{ textDecoration: 'none', color: 'inherit' }}>
+        <Link to="/" style={{ textDecoration: 'none', color: mode === 'light' ? 'white' : 'inherit' }}>
           <Typography
             variant="h6"
             component="div"
@@ -52,18 +52,7 @@ const NavBar = () => {
         >
           {isAuthenticated ? (
             <>
-              <Link to="/home" style={{ textDecoration: 'none' }}>
-                <Button
-                  color="inherit"
-                  sx={{
-                    fontSize: { xs: '0.8rem', sm: '0.875rem' },
-                    px: { xs: 2, sm: 3 },
-                  }}
-                >
-                  Home
-                </Button>
-              </Link>
-              <Link to="/todos" style={{ textDecoration: 'none' }}>
+              <Link to="/todos" style={{ textDecoration: 'none', color: mode === 'light' ? 'white' : 'inherit' }}>
                 <Button
                   color="inherit"
                   sx={{
@@ -74,7 +63,7 @@ const NavBar = () => {
                   Todo
                 </Button>
               </Link>
-              <Link to="/login" style={{ textDecoration: 'none' }}>
+              <Link to="/login" style={{ textDecoration: 'none', color: mode === 'light' ? 'white' : 'inherit' }}>
                 <Button
                   color="inherit"
                   onClick={handleLogout}
@@ -89,7 +78,7 @@ const NavBar = () => {
             </>
           ) : (
             <>
-              <Link to="/login" style={{ textDecoration: 'none' }}>
+              <Link to="/login" style={{ textDecoration: 'none', color: mode === 'light' ? 'white' : 'inherit' }}>
                 <Button
                   color="inherit"
                   sx={{
@@ -100,7 +89,7 @@ const NavBar = () => {
                   Login
                 </Button>
               </Link>
-              <Link to="/register" style={{ textDecoration: 'none' }}>
+              <Link to="/register" style={{ textDecoration: 'none', color: mode === 'light' ? 'white' : 'inherit' }}>
                 <Button
                   color="inherit"
                   sx={{
